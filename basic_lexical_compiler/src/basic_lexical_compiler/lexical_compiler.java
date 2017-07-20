@@ -12,9 +12,11 @@ public class lexical_compiler {
 		
 		String file_name = "src/basic_lexical_compiler/code";
 		code_reader cr = new code_reader();
-		char [] compressed_code = cr.reader(file_name); 
+		String compressed_code = cr.reader(file_name); 
 		
-		syntax_library syn = new syntax_library();
+		
+		grammar grm = new grammar();
+		grm.program(compressed_code);
 		//System.out.println(syn.syntax_table.get("}"));
 	 
 	}

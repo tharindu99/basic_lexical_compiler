@@ -14,10 +14,10 @@ public class lexical_compiler {
 		code_reader cr = new code_reader();
 		String compressed_code = cr.reader(file_name); 
 		
+		tokenizer tk = new tokenizer();
+		String [] tokenized_code = tk.code_tokenizer(compressed_code);
+		//System.out.println(tk.token_array.get(0).token_group);
 		
-		grammar grm = new grammar();
-		grm.program(compressed_code);
-		//System.out.println(syn.syntax_table.get("}"));
 	 
 	}
 	

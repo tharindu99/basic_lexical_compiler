@@ -34,16 +34,34 @@ public class tokenizer {
 	}
 
 	public String[] code_tokenizer(String comp_code) {
-	String tokend_code = comp_code;
+	String tokend_code_level1 = comp_code;
 	
 	for (int i = 0; i < token_array.size(); i++) {
-		if(tokend_code.contains(token_array.get(i).token)){
-			tokend_code = tokend_code.replace(token_array.get(i).token, "#"+token_array.get(i).token_group+"#");
+		if(tokend_code_level1.contains(token_array.get(i).token)){
+			tokend_code_level1 = tokend_code_level1.replace(token_array.get(i).token, "#"+token_array.get(i).token_group+"#");
 		}
 	}
-	System.out.println("tokanized code :"+tokend_code);	
+	System.out.println("tokanized code level1 :"+tokend_code_level1);
+	
+	String tmp_tok_level1[] = tokend_code_level1.split("#",-1);
+	String [] tmp_tok_level1_arr = remove_empty_element(tmp_tok_level1);
+	
+	
+	
 	
 	return null;
+	}
+	
+	public String[] remove_empty_element(String [] arr) {
+		int cnt = 1;
+		ArrayList<String> out_arrlist = new ArrayList<String>();
+		for (int i = 0; i < arr.length; i++) {
+			if(!arr[i].isEmpty()){
+				out_arrlist.add(arr[i]);
+			}
+		}
+		String out_arr[] = out_arrlist.toArray(new String[0]); 
+		return out_arr;
 	}
 	
 	

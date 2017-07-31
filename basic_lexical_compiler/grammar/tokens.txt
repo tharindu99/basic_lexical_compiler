@@ -1,0 +1,16 @@
+keywords [Start,int,float,for]
+
+identifiers [] -->variable name.. etc
+
+operators [=,<,>,=<,>=,!=,++,--]
+
+separators [{, } , ; , ( , )]
+
+literal [] --> constent values --> literals [integer,floating,charactor] 
+
+rules :
+# - is not a valid String and you can't use that for any point either as a string
+
+valid identifier 
+	Starting from character and (a-z)+(a-Z)*|(A-Z)+(a-Z)*
+	

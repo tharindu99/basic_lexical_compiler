@@ -37,12 +37,16 @@ public class tokenizer {
 
 	public String[] code_tokenizer(String comp_code) {
 		String tokend_code_level1 = comp_code;
-
+		int representative_id = 0;
+		code_to_tokens c_tk_obj = new code_to_tokens();
+		ArrayList<code_to_tokens>  c_tk = new ArrayList<code_to_tokens>() ;
+		
 		for (int i = 0; i < token_array.size(); i++) {
 			if (tokend_code_level1.contains(token_array.get(i).token)) {
 				tokend_code_level1 = tokend_code_level1.replace(
 						token_array.get(i).token, "#"
-								+ token_array.get(i).token_group + "#");
+								+ token_array.get(i).token_group+ "#");
+				
 			}
 		}
 		System.out.println("tokanized code level1 :" + tokend_code_level1);
@@ -71,6 +75,8 @@ public class tokenizer {
 		}
 		for (int i = 0; i < tmp_tok_level1_arr.length; i++) {
 			System.out.println(i+" "+tmp_tok_level1_arr[i]);
+			c_tk_obj.pos_id = i;
+			c_tk_obj.token_cat = tmp_tok_level1_arr[i];
 		}
 		
 		return null;

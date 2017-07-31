@@ -1,0 +1,38 @@
+<program> ::= Start { <program_body> }
+
+<program_body> ::= <variable_init>* <loop>* | <variable_init> <program_body> | <loop> <program_body> 
+
+<variable_init> ::= int <variable_name> = <digit>+ ;| float <variable_name> = <floating> ; 
+
+<floating> ::= <digit>+ . <digit>+ | <digit>+
+
+<variable_name> ::= <letter>+
+
+<letter> ::= <lowercase_letter> | <uppercase_letter>
+
+<lowercase_letter> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z
+
+<uppercase_letter> ::= A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z
+
+<digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+<loop> ::= for ( int <variable_name> = <digit>+ ; <condition> ; <progress_ctrl> ) { <loop_content> }
+
+<condition> ::= <variable_name> <conditional_operator> <digit>+ 
+
+<conditional_operator> ::= <|>|==|=>|=<|!=
+
+<progress_ctrl> ::= <variable_name> <progress_operator>
+
+<progress_operator> ::= ++|--| <arithmatic_operator> <digit>+
+
+<arithmatic_operator> ::= +|-|*|/|%
+
+<loop_content> ::= <statement>* <program_body> <statement>*
+
+<statement> ::= <variable_name> = <statement_part>;| <progress_ctrl> ; 
+
+<statement_part> ::= <variable_front> <arithmatic_operator> <variable_front> | <variable_front> 
+
+<variable_front> ::= <variable_name> | <floating>
+

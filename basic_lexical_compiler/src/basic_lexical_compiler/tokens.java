@@ -2,9 +2,9 @@ package basic_lexical_compiler;
 
 public class tokens {
 
-	int token_id;
-	String token_group;
-	String token;
+	public int token_id;
+	public String token_group;
+	public String token;
 	
 	public int getToken_id() {
 		return token_id;

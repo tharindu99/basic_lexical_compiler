@@ -37,20 +37,21 @@ public class tokenizer {
 
 	public String[] code_tokenizer(String comp_code) {
 		String tokend_code_level1 = comp_code;
-		int representative_id = 0;
-		code_to_tokens c_tk_obj = new code_to_tokens();
-		ArrayList<code_to_tokens>  c_tk = new ArrayList<code_to_tokens>() ;
+		String duplicate_tokend_code_level1 = comp_code;
 		
 		for (int i = 0; i < token_array.size(); i++) {
+			
 			if (tokend_code_level1.contains(token_array.get(i).token)) {
 				tokend_code_level1 = tokend_code_level1.replace(
 						token_array.get(i).token, "#"
-								+ token_array.get(i).token_group+ "#");
+								+ token_array.get(i).token_group+"#");
 				
 			}
 		}
 		System.out.println("tokanized code level1 :" + tokend_code_level1);
-
+		
+		
+		
 		String tmp_tok_level1[] = tokend_code_level1.split("#", -1);
 		String[] tmp_tok_level1_arr = remove_empty_element(tmp_tok_level1);
 
@@ -73,17 +74,22 @@ public class tokenizer {
 			}
 
 		}
-		for (int i = 0; i < tmp_tok_level1_arr.length; i++) {
+		
+		
+		
+		
+		
+		/*for (int i = 0; i < tmp_tok_level1_arr.length; i++) {
 			System.out.println(i+" "+tmp_tok_level1_arr[i]);
 			c_tk_obj.pos_id = i;
 			c_tk_obj.token_cat = tmp_tok_level1_arr[i];
-		}
+		}*/
 		
-		return null;
+		return tmp_tok_level1_arr;
 	}
 
 	public String[] remove_empty_element(String[] arr) {
-		int cnt = 1;
+	
 		ArrayList<String> out_arrlist = new ArrayList<String>();
 		for (int i = 0; i < arr.length; i++) {
 			if (!arr[i].isEmpty()) {
@@ -112,7 +118,7 @@ public class tokenizer {
 		return numeric_checker; 
 	}
 	
-	public static boolean isNumeric(String str){
+	public  boolean isNumeric(String str){
 	    try{
 	      double d = Double.parseDouble(str);
 	    }
@@ -122,4 +128,6 @@ public class tokenizer {
 	    }
 	    return true;
 	  }
+
+	
 }

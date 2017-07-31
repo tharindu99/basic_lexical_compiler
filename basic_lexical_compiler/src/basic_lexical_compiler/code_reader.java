@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 public class code_reader {
 	
-	public String reader(String file_name){
+	public String str_reader(String file_name){
 		String code_removeSpecs = null;
 		try {
 			FileReader fr=new FileReader(file_name);    
@@ -39,4 +39,5 @@ public class code_reader {
 		
 		return code_removeSpecs;
 	}
-}
+
+	}

@@ -87,7 +87,7 @@ public class token_cheacker {
 		for (int i = 0; i < out_tokenchaker.size(); i++) {
 			System.out.println(out_tokenchaker.get(i).token + " : "
 					+ out_tokenchaker.get(i).token_id + " : "
-					+ out_tokenchaker.get(i).token_group + " : ");
+					+ out_tokenchaker.get(i).token_group );
 		}
 
 		return null;

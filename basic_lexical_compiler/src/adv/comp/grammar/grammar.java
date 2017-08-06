@@ -139,8 +139,10 @@ public class grammar {
 	public boolean statement_chk(List<tokens> code) {
 		System.out.print("statement validation ");
 		boolean state = stmt_init(code);
-		System.out.println("init state : " + state);
-		return state /* | stmt_operation(code) */;
+		if(state)System.out.println("init state : " + state);
+		state = stmt_operation(code);
+		if(state)System.out.println("operation state : " + state);
+		return state ;
 	}
 
 	private boolean stmt_init(List<tokens> code) {
@@ -248,18 +250,12 @@ public class grammar {
 
 	public boolean stmt_operation(List<tokens> code) {
 		boolean state = false;
-		if (code.size() > 2) {
-			if (variable_name(code.get(0))) {
-				code.remove(0);
-				if (code.get(0).token.equalsIgnoreCase("++")
-						| code.get(0).token.equalsIgnoreCase("--")) {
-					state = true;
-				} else {
-					if (code.get(0).token.equalsIgnoreCase("=")) {
-						code.remove(0);
-						if (code.size() >= 1 && math_operation(code)) {
-							state = true;
-						}
+		
+		if(code.size()>2){
+			if(variable_name(code.get(0))){
+				if(code.get(1).token.equalsIgnoreCase("=")){
+					if(math_operation(code.subList(2, code.size()))){
+						state = true;
 					}
 				}
 			}
@@ -268,33 +264,44 @@ public class grammar {
 	}
 
 	private boolean math_operation(List<tokens> code) {
+		//System.out.println("llll :"+code.size());
 		boolean state = false;
-		if (code.size() == 1) {
-			if (variable_name(code.get(0)) | numeric(code)) {
+		
+		if(code.size()==2){
+			state = false;
+			System.out.println("statement not valied ");
+			System.exit(0);
+		}else {
+		if(code.size()>=1){
+			if(variable_name(code.get(0))){
+				if(code.size()==1){
+					state = true;
+				}
+				else if(code.size()>=3){		
+					if(arithmatic_operator(code.get(1))){
+						if(math_operation(code.subList(2, code.size()))){
+							state = true;
+						}
+					}
+				}
+			}else if(tk.isNumeric(code.get(0).token)){
 				state = true;
 			}
-		} else {
-			if (variable_name(code.get(0)) && arithmatic_operator(code.get(1))) {
-				code.remove(0);
-				code.remove(0);
-				if (math_operation(code)) {
-					state = true;
-				}
-			} else if (tk.isNumeric(code.get(0).token)
-					&& arithmatic_operator(code.get(1))) {
-				code.remove(0);
-				code.remove(0);
-				if (math_operation(code)) {
-					state = true;
-				}
-			}
+		}
 		}
 		return state;
 	}
 
 	private boolean arithmatic_operator(tokens tokens) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean state = false;
+		String arith[] = { "+","-","*","/"};
+		for (int i = 0; i < arith.length; i++) {
+			if(tokens.token.equalsIgnoreCase(arith[i])){
+				state = true ;
+				break;
+			}
+		}
+		return state;
 	}
 
 	private boolean numeric(List<tokens> code) {

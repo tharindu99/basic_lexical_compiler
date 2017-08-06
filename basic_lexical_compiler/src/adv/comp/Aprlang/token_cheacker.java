@@ -122,7 +122,7 @@ public class token_cheacker {
 			double d = Double.parseDouble(str);
 		} catch (NumberFormatException nfe) {
 			System.out
-					.println("Error in literal : This is not valid literal = "
+					.println("Error in literal : This is not valid literal :"
 							+ str);
 			return false;
 		}

@@ -1,14 +1,11 @@
 Start{
 int a = 2;
-float s = 2.1;
-d=d+4;
+float c = 2;
 	for(int b = 0; b < 5; b++)
 	{
 		a = a+b;
-		f = f+o;
+		
 	}
-	t= y;
-	g =a+g;
 	
 	
 }

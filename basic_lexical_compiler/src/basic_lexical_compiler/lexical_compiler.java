@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import adv.comp.Aprlang.Reader;
+import adv.comp.grammar.grammar;
 
 public class lexical_compiler {
 
@@ -16,25 +17,11 @@ public class lexical_compiler {
 		String file_name = "src/basic_lexical_compiler/code";
 		
 		Reader red = new Reader();
-		red.word_reader(file_name);
+		ArrayList<tokens> tokend_code = red.word_reader(file_name);
+		System.out.println("Tokanizer passed..!!");
 		
-		
-		
-		
-		/*code_reader cr = new code_reader();
-		String compressed_code = cr.str_reader(file_name); 
-		
-		tokenizer tk = new tokenizer();
-		String [] tokenized_code = tk.code_tokenizer(compressed_code);
-		
-		
-		code_to_tokens c_tk_obj = new code_to_tokens();
-		ArrayList<code_to_tokens>  c_tk = new ArrayList<code_to_tokens>();
-		
-		for (int i = 0; i < tokenized_code.length; i++) {
-			
-			
-		}*/
+		grammar grm = new grammar(tokend_code);
+		System.out.println("compiler state :"+grm.program(tokend_code));
 		
 		
 		

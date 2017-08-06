@@ -6,6 +6,7 @@ import basic_lexical_compiler.tokens;
 
 public class token_cheacker {
 	ArrayList<tokens> token_array = new ArrayList<tokens>();
+	ArrayList<tokens> tokened_code = new ArrayList<tokens>();
 
 	public token_cheacker() {
 
@@ -42,15 +43,17 @@ public class token_cheacker {
 		}
 	}
 
-	public tokens[] Check_token_grp(String word) {
+	public void Check_token_grp(String word) {
+		
 		String tokend_code_level1 = word;
 		for (int i = 0; i < token_array.size(); i++) {
 			if (tokend_code_level1.contains(token_array.get(i).token)) {
 				tokend_code_level1 = tokend_code_level1.replace(
 						token_array.get(i).token, "#$"
-								+ token_array.get(i).token_id + "#");
+								+ token_array.get(i).token_id + "#");			
 			}
 		}
+		
 		String temp2_word[] = tokend_code_level1.split("#");
 		int tmp_cnt = 0;
 		ArrayList<tokens> out_tokenchaker = new ArrayList<tokens>();
@@ -83,14 +86,17 @@ public class token_cheacker {
 			}
 		}
 		
+		/* print the tokanizer output*/
 		
 		for (int i = 0; i < out_tokenchaker.size(); i++) {
-			System.out.println(out_tokenchaker.get(i).token + " : "
+			tokened_code.add(out_tokenchaker.get(i));
+			/*System.out.println(out_tokenchaker.get(i).token + " : "
 					+ out_tokenchaker.get(i).token_id + " : "
-					+ out_tokenchaker.get(i).token_group );
+					+ out_tokenchaker.get(i).token_group );*/
 		}
-
-		return null;
+		
+		
+		
 	}
 
 	public boolean identifier_cheacker(String word) {

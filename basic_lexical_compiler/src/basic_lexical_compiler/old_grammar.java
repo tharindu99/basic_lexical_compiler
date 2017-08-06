@@ -1,6 +1,6 @@
 package basic_lexical_compiler;
 
-public class grammar {
+public class old_grammar {
 	syntax_library syn = new syntax_library();
 	public boolean program(String code) {
 		boolean state = false;

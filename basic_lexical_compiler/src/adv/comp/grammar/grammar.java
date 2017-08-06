@@ -10,6 +10,7 @@ import basic_lexical_compiler.tokens;
 
 public class grammar {
 	//public boolean state = true;
+	token_cheacker tk = new token_cheacker();
 
 	public boolean program(ArrayList<tokens> code) {
 		System.out.println("code array length to <program> : "+code.size());
@@ -122,14 +123,101 @@ public class grammar {
 	}
 
 	public boolean statement(List<tokens> code) {
-		System.out.println("statement validation");
-		for (int i = 0; i < code.size(); i++) {
-			System.out.print(code.get(i).token+"");
-		}
-		System.out.println();
-		return true;
+		System.out.print("statement validation ");
+		//System.out.println(" init statement : "+stmt_init(code));
+		return stmt_init(code) | stmt_operation(code);
 	}
 	
+	private boolean stmt_init(List<tokens> code) {
+		return integer_init(code)| floating_init(code);
+	}
+
+	private boolean integer_init(List<tokens> code) {
+		boolean state = false;
+		if(code.get(0).token.equalsIgnoreCase("int")){
+			code.remove(0);
+			if(variable_name(code.get(0))){
+				code.remove(0);
+				if(code.get(0).token.equalsIgnoreCase("=")){
+					code.remove(0);
+					if(digit(code)){
+						state = true;
+					}
+				}
+			}
+		}
+		return state;
+	}
+
+	private boolean digit(List<tokens> code) {
+		String str ="";
+		for (int i = 0; i < code.size(); i++) {
+			str = str + code.get(i).token;		
+		}
+		if (str == null) {
+	        return false;
+	    }
+	    int length = str.length();
+	    if (length == 0) {
+	        return false;
+	    }
+	    int i = 0;
+	    if (str.charAt(0) == '-') {
+	        if (length == 1) {
+	            return false;
+	        }
+	        i = 1;
+	    }
+	    for (; i < length; i++) {
+	        char c = str.charAt(i);
+	        if (c < '0' || c > '9') {
+	            return false;
+	        }
+	    }
+	    return true;
+	}
+
+	private boolean floating(List<tokens> code) {
+		String base ="";
+		for (int i = 0; i < code.size(); i++) {
+			base = base + code.get(i).token;		
+		}
+		
+		return tk.isNumeric(base);
+	}
+
+	private boolean variable_name(tokens tokens) {
+		boolean state = false;
+		String wd = tokens.token;
+		for (int i = 0; i < wd.length(); i++) {
+			state = Character.isLetter(wd.charAt(i));
+			if(!state) break;
+		}
+		return state;
+	}
+
+	private boolean floating_init(List<tokens> code) {
+		boolean state = false;
+		if(code.get(0).token.equalsIgnoreCase("float")){
+			code.remove(0);
+			if(variable_name(code.get(0))){
+				code.remove(0);
+				if(code.get(0).token.equalsIgnoreCase("=")){
+					code.remove(0);
+					if(floating(code)){
+						state = true;
+					}
+				}
+			}
+		}
+		return state;
+	}
+
+	public boolean stmt_operation(List<tokens> code) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	public int bracket_spliter(List<tokens> code,String startbracket, String endbracket){
 		// should send some thing like  asdsf {} }
 		/*System.out.println("bracketer");

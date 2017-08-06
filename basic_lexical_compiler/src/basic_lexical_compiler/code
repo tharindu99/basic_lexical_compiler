@@ -1,5 +1,6 @@
 Start{
-s= g;
+int a = 2;
+float s = 2.1;
 d=d+4;
 	for(int b = 0; b < 5; b++)
 	{

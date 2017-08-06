@@ -20,7 +20,7 @@ public class lexical_compiler {
 		ArrayList<tokens> tokend_code = red.word_reader(file_name);
 		System.out.println("Tokanizer passed..!!");
 		
-		grammar grm = new grammar(tokend_code);
+		grammar grm = new grammar();
 		System.out.println("compiler state :"+grm.program(tokend_code));
 		
 		

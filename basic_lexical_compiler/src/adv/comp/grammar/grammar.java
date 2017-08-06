@@ -1,6 +1,7 @@
 package adv.comp.grammar;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -40,36 +41,41 @@ public class grammar {
 		return program_state;
 	}
 
-	private boolean program_body(ArrayList<tokens> code) {
+	private boolean program_body(List<tokens> code) {
 		boolean state = false;
-		System.out.println("calling to program_body length");
-		/*for (int i = 0; i < code.size(); i++) {
-			System.out.println("jj :"+code.get(i).token);
-		}*/
 		if(code.size() == 0){
 			//empty clouser
 			state = true;
 		}else if (code.get(0).token.equalsIgnoreCase("for")) { //loop occured
 			code.remove(0);
 			if(code.get(0).token.equalsIgnoreCase("(")){
-				code.remove(0);
 				int close_bracket_index = bracket_spliter(code, "(",")");
-				List<tokens> loop_header = code.subList(0, close_bracket_index);
-				
+				List<tokens> loop_header = code.subList(1, close_bracket_index);
+				System.out.println("loop header");
+				for (tokens tokens : loop_header) {
+					System.out.print(tokens.token +" ");
+				}
+				System.out.println();
 					
 				for (int i = 0; i <= close_bracket_index; i++) {
-						code.remove(0);
+					if(code.size()>0)code.remove(0);
 					}
 				
 				//loop body detector	
 				if(code.get(0).token.equalsIgnoreCase("{")){
-					code.remove(0);
 					int loop_close_bracket_index = bracket_spliter(code, "{", "}");
-					List<tokens> loop_body = code.subList(0, loop_close_bracket_index);
+					List<tokens> loop_body = code.subList(1, loop_close_bracket_index);
+					System.out.println("loop body length "+loop_body.size());
+					program_body(loop_body);
 					
+					System.out.println("loop body");
+					for (tokens tokens : loop_body) {
+						System.out.print(tokens.token +" ");
+					}
+					System.out.println();
 					
 					for (int i = 0; i <= loop_close_bracket_index; i++) {
-						code.remove(0);
+						if(code.size()>0)code.remove(0);
 					}
 					
 					
@@ -82,27 +88,26 @@ public class grammar {
 				System.out.println("syntax error : loop header doesn't defined correctly.");
 			}
 			
-			System.out.println("after loop : "+code.size());
-			
+			System.out.println("after loop code length : "+code.size());
+			program_body(code);
 		}else {
-			
+			//statement identify here 
 		}
 		
 		
 		return state;
 	}
 	
-	public int bracket_spliter(ArrayList<tokens> code,String startbracket, String endbracket){
-		// should send some thing like { asdsf {} }
-		System.out.println("bracket spliter");
+	public int bracket_spliter(List<tokens> code,String startbracket, String endbracket){
+		// should send some thing like  asdsf {} }
+		System.out.println("bracketer");
 		for (int i = 0; i < code.size(); i++) {
 			System.out.print(code.get(i).token+" ");
 		}
 		System.out.println();
 		int outline = 0;
 		Stack<tokens> tokan_stk = new Stack<tokens>();
-		tokan_stk.push(code.get(0));
-		for (int i = 1; i < code.size(); i++) {
+		for (int i = 0; i < code.size(); i++) {
 			 if(code.get(i).token.equalsIgnoreCase(startbracket)){
 				System.out.println("outline :"+outline);
 				tokan_stk.push(code.get(i));

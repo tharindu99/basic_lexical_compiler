@@ -76,9 +76,11 @@ public class grammar {
 					}
 					System.out.println();
 
-					List<tokens> etc_arr = code.subList(loop_close_bracket_index+1, code.size()-1);
+					//List<tokens> etc_arr = code.subList(loop_close_bracket_index+1, code.size()-1);
 
 					state = state & program_body(loop_body);
+					code.remove(0);
+					code.remove(0);
 					
 				}else{
 					state = false;
@@ -102,6 +104,7 @@ public class grammar {
 				}
 			}
 			List<tokens> statement = code.subList(0, cnt);
+			
 				System.out.print("statement : ");
 				for (tokens tokens : statement) {
 					System.out.print(tokens.token);

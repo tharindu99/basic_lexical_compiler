@@ -60,7 +60,7 @@ public class grammar {
 			if (code.get(0).token.equalsIgnoreCase("(")) {
 				int close_bracket_index = bracket_spliter(code, "(", ")");
 				List<tokens> loop_header = code.subList(1, close_bracket_index);
-				// oooo -> state = true & loop_header();
+				state = state & loop_header(loop_header);
 				System.out.print("loop header : ");
 				for (tokens tokens : loop_header) {
 					System.out.print(tokens.token + " ");
@@ -136,6 +136,34 @@ public class grammar {
 		return state;
 	}
 
+	private boolean loop_header(List<tokens> loop_header) {
+		boolean state  = true;
+		if(loop_header.size()==11){
+			List<tokens> varible_init = loop_header.subList(0, 4);
+			state = state & stmt_init(varible_init);
+			List<tokens> condition = loop_header.subList(5, 8);
+			if(variable_name(condition.get(0))){
+				if(condition.get(1).token.equalsIgnoreCase("<")|condition.get(1).token.equalsIgnoreCase("<=")|condition.get(1).token.equalsIgnoreCase(">")|condition.get(1).token.equalsIgnoreCase(">=")){
+					if(variable_name(condition.get(2))| tk.isNumeric(condition.get(2).token) ){
+						state = state & true;
+					}else{
+						state =false;
+					}
+				}
+			}
+			List<tokens> progress_ctrl = loop_header.subList(9, 11);
+			if(variable_name(progress_ctrl.get(0))){
+				if(progress_ctrl.get(1).token.equalsIgnoreCase("++")|progress_ctrl.get(1).token.equalsIgnoreCase("--")){
+					state = state & true;
+				}else{
+					state = false;
+				}
+			}
+		}
+		System.out.println("loop header : " +state);
+		return state;
+	}
+
 	public boolean statement_chk(List<tokens> code) {
 		System.out.print("statement validation ");
 		boolean state = stmt_init(code);
@@ -146,7 +174,7 @@ public class grammar {
 	}
 
 	private boolean stmt_init(List<tokens> code) {
-		boolean state = false;
+		boolean state = true;
 		if (code.size() == 4) {
 			if (code.get(0).token.equalsIgnoreCase("int")
 					| code.get(0).token.equalsIgnoreCase("float")) {
@@ -162,64 +190,8 @@ public class grammar {
 		return state;
 	}
 
-	private boolean integer_init(List<tokens> code) {
-		boolean state = false;
-		if (code.size() > 0) {
-			if (code.get(0).token.equalsIgnoreCase("int")) {
-				code.remove(0);
-				if (variable_name(code.get(0))) {
-					code.remove(0);
-					if (code.get(0).token.equalsIgnoreCase("=")) {
-						code.remove(0);
-						if (digit(code)) {
-							state = true;
-						}
-					}
-				}
-			}
-		}
-		return state;
-	}
-
-	private boolean digit(List<tokens> code) {
-		String str = "";
-		for (int i = 0; i < code.size(); i++) {
-			str = str + code.get(i).token;
-		}
-		if (str == null) {
-			return false;
-		}
-		int length = str.length();
-		if (length == 0) {
-			return false;
-		}
-		int i = 0;
-		if (str.charAt(0) == '-') {
-			if (length == 1) {
-				return false;
-			}
-			i = 1;
-		}
-		for (; i < length; i++) {
-			char c = str.charAt(i);
-			if (c < '0' || c > '9') {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private boolean floating(List<tokens> code) {
-		String base = "";
-		for (int i = 0; i < code.size(); i++) {
-			base = base + code.get(i).token;
-		}
-
-		return tk.isNumeric(base);
-	}
-
 	private boolean variable_name(tokens tokens) {
-		boolean state = false;
+		boolean state = true;
 		String wd = tokens.token;
 		for (int i = 0; i < wd.length(); i++) {
 			state = Character.isLetter(wd.charAt(i));
@@ -229,27 +201,8 @@ public class grammar {
 		return state;
 	}
 
-	private boolean floating_init(List<tokens> code) {
-		boolean state = false;
-		if (code.size() > 0) {
-			if (code.get(0).token.equalsIgnoreCase("float")) {
-				code.remove(0);
-				if (variable_name(code.get(0))) {
-					code.remove(0);
-					if (code.get(0).token.equalsIgnoreCase("=")) {
-						code.remove(0);
-						if (floating(code)) {
-							state = true;
-						}
-					}
-				}
-			}
-		}
-		return state;
-	}
-
 	public boolean stmt_operation(List<tokens> code) {
-		boolean state = false;
+		boolean state = true;
 		
 		if(code.size()>2){
 			if(variable_name(code.get(0))){
@@ -265,7 +218,7 @@ public class grammar {
 
 	private boolean math_operation(List<tokens> code) {
 		//System.out.println("llll :"+code.size());
-		boolean state = false;
+		boolean state = true;
 		
 		if(code.size()==2){
 			state = false;
@@ -293,7 +246,7 @@ public class grammar {
 	}
 
 	private boolean arithmatic_operator(tokens tokens) {
-		boolean state = false;
+		boolean state = true;
 		String arith[] = { "+","-","*","/"};
 		for (int i = 0; i < arith.length; i++) {
 			if(tokens.token.equalsIgnoreCase(arith[i])){
@@ -302,10 +255,6 @@ public class grammar {
 			}
 		}
 		return state;
-	}
-
-	private boolean numeric(List<tokens> code) {
-		return digit(code) | floating(code);
 	}
 
 	public int bracket_spliter(List<tokens> code, String startbracket,

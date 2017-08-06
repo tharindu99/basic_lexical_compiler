@@ -1,10 +1,14 @@
 <program> ::= Start { <program_body> }
 
-<program_body> ::= <variable_init>* <loop>* | <variable_init> <program_body> | <loop> <program_body> 
+<program_body> ::= <statement>+ <program_body>|<loop>+|<program_body> | empty_closure
 
-<variable_init> ::= int <variable_name> = <digit>+ ;| float <variable_name> = <floating> ; 
+<statement> ::= <stmt_init>; | <stmt_operation>;  
 
-<floating> ::= <digit>+ . <digit>+ | <digit>+
+<stmt_init> ::= <integer_init> | <floating_init>
+
+<integer_init> ::=    int <variable_name> = <digit>+ 
+
+<floating_init> ::=  float <variable_name> = <floating>  
 
 <variable_name> ::= <letter>+
 
@@ -16,23 +20,27 @@
 
 <digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
-<loop> ::= for ( int <variable_name> = <digit>+ ; <condition> ; <progress_ctrl> ) { <loop_content> }
+<floating> ::= <digit>+ . <digit>+ | <digit>+
 
-<condition> ::= <variable_name> <conditional_operator> <digit>+ 
+<stmt_operation> ::= <variable_name> = <math_operation>
 
-<conditional_operator> ::= <|>|==|=>|=<|!=
+<math_operation> ::= <variable_name> | <numeric> | <variable_name> <arithmatic_operator> <math_operation> | <numeric> <arithmatic_operator> <math_operation>
+
+<numeric> ::= <digit>+ | <floating> 
+
+<arithmatic_operator> ::= +|-|*|/|%
+
+<loop> ::= for ( <loop_header> ) { <program_body> }
+
+<loop_header> ::= <integer_init> ; <condition> ; <progress_ctrl> 
+
+<condition> ::= <variable_name> <loop_conditional_operator> [<digit>+| <variable_name>] 
+
+<loop_conditional_operator> ::= <|>|=<|=>
 
 <progress_ctrl> ::= <variable_name> <progress_operator>
 
 <progress_operator> ::= ++|--| <arithmatic_operator> <digit>+
 
-<arithmatic_operator> ::= +|-|*|/|%
 
-<loop_content> ::= <statement>* <program_body> <statement>*
-
-<statement> ::= <variable_name> = <statement_part>;| <progress_ctrl> ; 
-
-<statement_part> ::= <variable_front> <arithmatic_operator> <variable_front> | <variable_front> 
-
-<variable_front> ::= <variable_name> | <floating>
 

@@ -42,6 +42,7 @@ public class grammar {
 	}
 
 	private boolean program_body(List<tokens> code) {
+		System.out.println("<program_body> "+code.size());
 		boolean state = false;
 		if(code.size() == 0){
 			//empty clouser
@@ -51,34 +52,33 @@ public class grammar {
 			if(code.get(0).token.equalsIgnoreCase("(")){
 				int close_bracket_index = bracket_spliter(code, "(",")");
 				List<tokens> loop_header = code.subList(1, close_bracket_index);
-				System.out.println("loop header");
-				for (tokens tokens : loop_header) {
-					System.out.print(tokens.token +" ");
-				}
-				System.out.println();
 					
-				for (int i = 0; i <= close_bracket_index; i++) {
-					if(code.size()>0)code.remove(0);
+					System.out.print("loop header : ");
+					for (tokens tokens : loop_header) {
+						System.out.print(tokens.token +" ");
 					}
+					System.out.println();
+					code = code.subList(close_bracket_index+1, code.size());
+					
+					/*for (int i = 0; i <= close_bracket_index; i++) {
+					if(code.size()>0)code.remove(0);
+					}*/
 				
 				//loop body detector	
 				if(code.get(0).token.equalsIgnoreCase("{")){
 					int loop_close_bracket_index = bracket_spliter(code, "{", "}");
 					List<tokens> loop_body = code.subList(1, loop_close_bracket_index);
-					System.out.println("loop body length "+loop_body.size());
-					program_body(loop_body);
+					//System.out.println("loop body length "+loop_close_bracket_index);
 					
-					System.out.println("loop body");
+					System.out.print("loop body[size "+loop_close_bracket_index+"] : ");
 					for (tokens tokens : loop_body) {
 						System.out.print(tokens.token +" ");
 					}
 					System.out.println();
-					
-					for (int i = 0; i <= loop_close_bracket_index; i++) {
-						if(code.size()>0)code.remove(0);
-					}
-					
-					
+
+					List<tokens> etc_arr = code.subList(loop_close_bracket_index+1, code.size()-1);
+
+					program_body(loop_body);
 					
 				}else{
 					System.out.println("syntax error : loop body doesn't defined correctly.");
@@ -88,10 +88,28 @@ public class grammar {
 				System.out.println("syntax error : loop header doesn't defined correctly.");
 			}
 			
-			System.out.println("after loop code length : "+code.size());
+			//System.out.println("after loop code length : "+code.size());
 			program_body(code);
 		}else {
 			//statement identify here 
+			int cnt = 0;
+			for (int i = 0; i < code.size(); i++) {
+				if(code.get(i).token.equalsIgnoreCase(";")){
+					cnt = i;
+					break;
+				}
+			}
+			List<tokens> statement = code.subList(0, cnt);
+				System.out.print("statement : ");
+				for (tokens tokens : statement) {
+					System.out.print(tokens.token);
+				}
+				System.out.println();
+			
+			for (int i = 0; i <= cnt; i++) {
+				code.remove(0);
+			}
+			program_body(code);
 		}
 		
 		
@@ -100,16 +118,16 @@ public class grammar {
 	
 	public int bracket_spliter(List<tokens> code,String startbracket, String endbracket){
 		// should send some thing like  asdsf {} }
-		System.out.println("bracketer");
+		/*System.out.println("bracketer");
 		for (int i = 0; i < code.size(); i++) {
 			System.out.print(code.get(i).token+" ");
 		}
-		System.out.println();
+		System.out.println();*/
 		int outline = 0;
 		Stack<tokens> tokan_stk = new Stack<tokens>();
 		for (int i = 0; i < code.size(); i++) {
 			 if(code.get(i).token.equalsIgnoreCase(startbracket)){
-				System.out.println("outline :"+outline);
+				//System.out.println("outline :"+outline);
 				tokan_stk.push(code.get(i));
 			}else if(code.get(i).token.equalsIgnoreCase(endbracket)){
 				tokan_stk.pop();

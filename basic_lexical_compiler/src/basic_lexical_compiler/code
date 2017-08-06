@@ -1,14 +1,13 @@
 Start{
+s= g;
+d=d+4;
 	for(int b = 0; b < 5; b++)
 	{
-		
 		a = a+b;
-		for(int b = 0; b < 5; b++)
-	{
-		
-		a = a+b;
-		
+		f = f+o;
 	}
-	}
+	t= y;
+	g =5+4;
+	
 	
 }

@@ -9,11 +9,11 @@ import adv.comp.Aprlang.token_cheacker;
 import basic_lexical_compiler.tokens;
 
 public class grammar {
-	public boolean state = false;
+	//public boolean state = true;
 
 	public boolean program(ArrayList<tokens> code) {
 		System.out.println("code array length to <program> : "+code.size());
-		boolean program_state = false;
+		boolean program_state = true;
 		String ele_0 = code.get(0).token;
 		String ele_1 = code.get(1).token;
 		String ele_last = code.get(code.size()-1).token;
@@ -24,7 +24,7 @@ public class grammar {
 					code.remove(0);
 					code.remove(0);
 					code.remove(code.size()-1);
-					program_state = true & program_body(code); 
+					program_state =  program_body(code); 
 					
 				}else {
 					System.out.println("Syntactical error in parse tree level : "+ele_last);
@@ -41,9 +41,9 @@ public class grammar {
 		return program_state;
 	}
 
-	private boolean program_body(List<tokens> code) {
+	public boolean program_body(List<tokens> code) {
 		System.out.println("<program_body> "+code.size());
-		boolean state = false;
+		boolean state = true;
 		if(code.size() == 0){
 			//empty clouser
 			state = true;
@@ -52,7 +52,7 @@ public class grammar {
 			if(code.get(0).token.equalsIgnoreCase("(")){
 				int close_bracket_index = bracket_spliter(code, "(",")");
 				List<tokens> loop_header = code.subList(1, close_bracket_index);
-					
+	//oooo ->   state = true & loop_header();	
 					System.out.print("loop header : ");
 					for (tokens tokens : loop_header) {
 						System.out.print(tokens.token +" ");
@@ -78,18 +78,20 @@ public class grammar {
 
 					List<tokens> etc_arr = code.subList(loop_close_bracket_index+1, code.size()-1);
 
-					program_body(loop_body);
+					state = state & program_body(loop_body);
 					
 				}else{
+					state = false;
 					System.out.println("syntax error : loop body doesn't defined correctly.");
 				}
 				
 			}else{
+				state = false;
 				System.out.println("syntax error : loop header doesn't defined correctly.");
 			}
 			
 			//System.out.println("after loop code length : "+code.size());
-			program_body(code);
+			state = state & program_body(code);
 		}else {
 			//statement identify here 
 			int cnt = 0;
@@ -105,15 +107,24 @@ public class grammar {
 					System.out.print(tokens.token);
 				}
 				System.out.println();
+				state = state & statement(statement);
 			
 			for (int i = 0; i <= cnt; i++) {
 				code.remove(0);
 			}
-			program_body(code);
+			state = state & program_body(code);
 		}
 		
-		
 		return state;
+	}
+
+	public boolean statement(List<tokens> code) {
+		System.out.println("statement validation");
+		for (int i = 0; i < code.size(); i++) {
+			System.out.print(code.get(i).token+"");
+		}
+		System.out.println();
+		return true;
 	}
 	
 	public int bracket_spliter(List<tokens> code,String startbracket, String endbracket){
